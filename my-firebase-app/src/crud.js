@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
-import { doc, addDoc, collection, getDocs, updateDoc } from 'firebase/firestore'
+import { doc, addDoc, collection, getDocs, updateDoc, deleteDoc } from 'firebase/firestore'
 
 const Crud = () => {
   const [name, setName] = useState('')
@@ -71,6 +71,19 @@ const Crud = () => {
     }
   }
 
+  // Delete the data
+  const del = async (id) => {
+    try {
+      const delref = doc(db, "my-firebase-app", id)
+      await deleteDoc(delref)
+      alert("Deleted Successfully")
+      // Fetch data again to remove the deleted item from the display
+      fetch()
+    } catch (error) {
+      alert("Error: " + error.message)
+    }
+  }
+
   return (
     <>
       <div className='form_container'>
@@ -110,6 +123,7 @@ const Crud = () => {
               <h3>Address: {data.Address}</h3>
               <h3>Email: {data.Email}</h3>
               <button onClick={() => passData(data.id)}>Update</button>
+              <button onClick={() => del(data.id)}>Delete</button>
             </div>
           ))}
         </div>
