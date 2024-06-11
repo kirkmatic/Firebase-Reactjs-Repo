@@ -1,56 +1,55 @@
-import React, { useState } from 'react';
-import { db } from './firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import React, { useState } from 'react'
+import { db } from './firebase'
+import { addDoc, collection } from 'firebase/firestore'
 
 const Crud = () => {
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('')
+  const [address, setAddress] = useState('')
+  const [email, setEmail] = useState('')
+  
+  // Creating a Database Ref
+  const dbref = collection(db, "my-firebase-app")
 
-  // Correct way to get a reference to the Firestore collection
-  const dbRef = collection(db, 'my-firebase-app');
-
-  // Function to add data to the Firestore collection
+  // Add data to database
   const add = async () => {
     try {
-      const docRef = await addDoc(dbRef, {
-        Name: name,
-        Address: address,
-        Email: email,
-      });
-      alert('Data Added Successfully');
-      console.log('Document written with ID: ', docRef.id);
+      const addData = await addDoc(dbref, { Name: name, Address: address, Email: email })
+      if (addData) {
+        alert("Data Added Successfully")
+        setName('')
+        setAddress('')
+        setEmail('')
+      }
     } catch (error) {
-      console.error('Error adding document: ', error);
-      alert('Error adding document: ' + error.message);
+      alert("Error: " + error.message)
     }
-  };
+  }
 
   return (
     <>
-      <div className="form_container">
+      <div className='form_container'>
         <h2>Add / Update Form</h2>
-        <div className="box">
-          <input
-            type="text"
-            placeholder="Fullname"
-            autoComplete="off"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+        <div className='box'>
+          <input 
+            type='text' 
+            placeholder='Fullname' 
+            autoComplete='off'  
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
           />
-          <input
-            type="text"
-            placeholder="Address"
-            autoComplete="off"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
+          <input 
+            type='text' 
+            placeholder='Address' 
+            autoComplete='off' 
+            value={address} 
+            onChange={(e) => setAddress(e.target.value)} 
           />
-          <input
-            type="email"
-            placeholder="Email"
-            autoComplete="off"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          <input 
+            type='email' 
+            placeholder='Email' 
+            autoComplete='off' 
+            value={email}  
+            onChange={(e) => setEmail(e.target.value)} 
           />
           <button onClick={add}>Add</button>
           <button>Update</button>
@@ -58,14 +57,14 @@ const Crud = () => {
       </div>
       <div>
         <h2>CRUD Database</h2>
-        <div className="container">
-          <div className="box">
-            {/* Add your display logic here */}
+        <div className='container'>
+          <div className='box'>
+            {/* Additional CRUD functionality can be added here */}
           </div>
         </div>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Crud;
+export default Crud
