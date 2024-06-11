@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { db } from './firebase'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
 
 const Crud = () => {
   const [name, setName] = useState('')
   const [address, setAddress] = useState('')
   const [email, setEmail] = useState('')
-  
+  const [fetchData, setFetchData] = useState([])
+
   // Creating a Database Ref
   const dbref = collection(db, "my-firebase-app")
 
@@ -16,14 +17,33 @@ const Crud = () => {
       const addData = await addDoc(dbref, { Name: name, Address: address, Email: email })
       if (addData) {
         alert("Data Added Successfully")
+        // Clear input fields after adding data
         setName('')
         setAddress('')
         setEmail('')
+        // Fetch data again to include the newly added item
+        fetch()
+        window.location.reload()
       }
     } catch (error) {
       alert("Error: " + error.message)
     }
   }
+
+  // Fetch data from database
+  const fetch = async () => {
+    try {
+      const snapshot = await getDocs(dbref)
+      const fetchData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+      setFetchData(fetchData)
+    } catch (error) {
+      alert("Error: " + error.message)
+    }
+  }
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
     <>
@@ -58,9 +78,14 @@ const Crud = () => {
       <div>
         <h2>CRUD Database</h2>
         <div className='container'>
-          <div className='box'>
-            {/* Additional CRUD functionality can be added here */}
-          </div>
+          {fetchData.map(data => (
+            <div key={data.id} className='box'>
+              <h3>Name: {data.Name}</h3>
+              <h3>Address: {data.Address}</h3>
+              <h3>Email: {data.Email}</h3>
+              <button>Update</button>
+            </div>
+          ))}
         </div>
       </div>
     </>
