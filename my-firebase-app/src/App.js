@@ -1,10 +1,10 @@
 import React from 'react'
 import Crud from './crud'
+import './index.css'
 
 const App = () => {
   return (
-    <div>
-      <h1>Yow G!!!!</h1>
+    <div className='bg-gray-100 h-max'>
       <Crud />
     </div>
   )
