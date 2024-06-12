@@ -1,5 +1,6 @@
 import React from 'react'
 import Crud from './crud'
+import './index.css'
 
 const App = () => {
   return (
