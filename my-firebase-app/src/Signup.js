@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { auth, db } from './firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -50,6 +50,9 @@ const Signup = () => {
           <option value="admin">Admin</option>
         </select>
         <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Sign Up</button>
+        <p className="mt-4">
+          Already have an account? <Link to="/login" className="text-blue-500">Login</Link>
+        </p>
       </form>
     </div>
   );
