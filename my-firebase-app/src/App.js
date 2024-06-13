@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Login';
@@ -15,7 +13,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/crud" element={<ProtectedRoute><Crud /></ProtectedRoute>} />
+        <Route 
+          path="/crud" 
+          element={
+            <ProtectedRoute>
+              <Crud />
+            </ProtectedRoute>
+          } 
+        />
         <Route path="/" element={<Login />} />
       </Routes>
     </Router>

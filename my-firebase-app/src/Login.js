@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { auth, db } from './firebase';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -17,9 +17,9 @@ const Login = () => {
       const userDoc = await db.collection('users').doc(user.uid).get();
       const userData = userDoc.data();
       if (userData.role === 'admin') {
-        navigate('/crud');
+        navigate('/Crud');
       } else {
-        navigate('/home');
+        navigate('/Home');
       }
     } catch (error) {
       alert(error.message);
@@ -47,6 +47,9 @@ const Login = () => {
           required
         />
         <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Login</button>
+        <p className="mt-4">
+          Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
+        </p>
       </form>
     </div>
   );
