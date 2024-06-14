@@ -5,17 +5,27 @@ import { useNavigate, Link } from 'react-router-dom';
 const Navbar = () => {
   return (
     <>
-        <header>
-            <div className='flex space-x-20 sticky top-0 bg-red-50 px-10 py-6'>
-                <h1 className='text-4xl font-bold text-indigo-200'>LOGO</h1>
-                <div className='flex space-x-3'>
-                    <p><Link to=''>Home</Link></p>
-                    <p>About</p>
-                    <p>Services</p>
-                    <button className='w-20 p-2 bg-blue-500 text-white rounded'><Link to='../pages/LoginPage.js'>Login</Link></button>
-                </div>
-            </div>
-        </header>
+<nav >
+  <div className="flex sticky top-0 z-50 justify-between items-center px-6 py-4 mx-auto max-w-screen-xl">
+    <div className="flex items-center">
+      <h1 className="text-3xl font-bold text-red-400">LOGO</h1>
+    </div>
+    <nav className="flex space-x-6 items-center">
+      <p className="font-medium hover:text-red-400 transition-colors duration-300">
+        <Link to="/">Home</Link>
+      </p>
+      <p className="font-medium hover:text-red-400 transition-colors duration-300">
+        <Link to="/about">About</Link>
+      </p>
+      <p className="font-medium hover:text-red-400 transition-colors duration-300">
+        <Link to="/services">Services</Link>
+      </p>
+      <button className="w-24 h-10 bg-red-400 text-white rounded transition-transform transform font-medium hover:bg-slate-500">
+        <Link to="/login" className="block w-full h-full text-center leading-10">Login</Link>
+      </button>
+    </nav>
+  </div>
+</nav>
     </>
   )
 }
