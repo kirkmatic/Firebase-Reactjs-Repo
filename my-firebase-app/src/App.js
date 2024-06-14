@@ -5,11 +5,12 @@ import Signup from './Signup';
 import Home from './Home';
 import Crud from './Crud';
 
+
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 
-import ProtectedRoute from './ProtectedRoute';
+import ProtectedRoute from './authentications/ProtectedRoute';
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<HomePage />} />
       </Routes>
     </Router>
   );
