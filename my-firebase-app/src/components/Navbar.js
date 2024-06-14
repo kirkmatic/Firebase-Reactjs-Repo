@@ -21,7 +21,7 @@ const Navbar = () => {
         <Link to="/services">Services</Link>
       </p>
       <button className="w-24 h-10 bg-red-400 text-white rounded transition-transform transform font-medium hover:bg-slate-500">
-        <Link to="/login" className="block w-full h-full text-center leading-10">Login</Link>
+        <Link to="./pages/LoginPage.js" className="block w-full h-full text-center leading-10">Login</Link>
       </button>
     </nav>
   </div>

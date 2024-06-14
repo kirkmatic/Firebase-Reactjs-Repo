@@ -8,7 +8,8 @@ const LoginPage = () => {
   return (
     <>
         <div>
-
+            <h1>Login na</h1>
+            <p>Login to</p>
         </div>
     </>
   )
