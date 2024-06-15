@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { db } from './firebase';
+import { auth, db } from './authentications/Firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 const Crud = () => {
