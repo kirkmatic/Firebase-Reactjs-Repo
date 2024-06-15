@@ -11,7 +11,7 @@ const Navbar = () => {
                 </div>
                 <div className="flex space-x-6 items-center">
                     <p className="font-medium hover:text-red-400 transition-colors duration-300">
-                    <Link to="/">Home</Link>
+                    <Link to="/home">Home</Link>
                     </p>
                     <p className="font-medium hover:text-red-400 transition-colors duration-300">
                     <Link to="/about">About</Link>
