@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <>
         <nav >
-            <div className="flex sticky top-0 z-50 justify-between items-center px-6 py-4 mx-auto max-w-screen-xl">
+            <div className="flex sticky top-0 z-50 justify-between items-center px-1 py-4 mx-auto max-w-screen-xl">
                 <div className="flex items-center">
                     <h1 className="text-3xl font-bold text-red-400">LOGO</h1>
                 </div>

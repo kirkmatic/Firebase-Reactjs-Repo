@@ -1,8 +1,13 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}', // Ensure all paths where TailwindCSS classes are used are included
+  ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'home-section': "url('/src/assets/homebg.png')",
+      },
+    },
   },
   plugins: [],
 }
