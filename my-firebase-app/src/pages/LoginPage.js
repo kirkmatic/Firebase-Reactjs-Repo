@@ -17,7 +17,7 @@ const LoginPage = () => {
       const userDoc = await db.collection('users').doc(user.uid).get();
       const userData = userDoc.data();
       if (userData.role === 'admin') {
-        navigate('/Crud');
+        navigate('/admin-page');
       } else {
         navigate('/Home');
       }
