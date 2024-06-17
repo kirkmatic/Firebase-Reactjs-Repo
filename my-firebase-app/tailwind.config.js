@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'home-section': "url('/src/assets/homebg.png')",
+        'home-section': "url('/src/assets/homesec_bg.svg')",
       },
     },
   },
