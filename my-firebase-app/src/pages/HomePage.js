@@ -2,6 +2,7 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import HomeSection from '../components/HomeSection'
 import AboutSection from '../components/AboutSection'
+import ServicesSection from '../components/ServicesSection'
 
 const HomePage = () => {
   return (
@@ -9,9 +10,7 @@ const HomePage = () => {
       <Navbar />
       <HomeSection/>
       <AboutSection />
-        <div>
-        <h1 className='text-3xl'>Home Page</h1>
-        </div>
+      <ServicesSection />
     </>
   )
 }
