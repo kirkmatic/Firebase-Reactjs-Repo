@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         'home-section': "url('/src/assets/homesec_bg.svg')",
+        'about-section': "url('/src/assets/about-pic.png')",
       },
     },
   },
