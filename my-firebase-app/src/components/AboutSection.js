@@ -4,7 +4,7 @@ const AboutSection = () => {
   return (
     <section className="bg-cover bg-center w-full min-h-screen px-9 py-12 flex justify-center items-center gap-20">
       <div className="mb-12 w-full max-w-2xl">
-        <div className="bg-about-section w-full min-h-[80vh] bg-cover bg-center"></div>
+        <div className="bg-about-section w-[600px] min-h-[600px] bg-cover bg-center"></div>
       </div>
       <div className="max-w-xl text-left">
         <h1 className="text-red-400 text-6xl font-extrabold mb-8">About Us</h1>
