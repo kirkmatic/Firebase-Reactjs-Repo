@@ -5,18 +5,18 @@ import { useNavigate, Link } from 'react-router-dom';
 
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      const userCredential = await auth.signInWithEmailAndPassword(Email, Password);
       const user = userCredential.user;
       const userDoc = await db.collection('users').doc(user.uid).get();
       const userData = userDoc.data();
-      if (userData.role === 'admin') {
+      if (userData.Role === 'admin') {
         navigate('/admin-page');
       } else {
         navigate('/Home');
@@ -33,7 +33,7 @@ const LoginPage = () => {
         <input
           type="email"
           placeholder="Email"
-          value={email}
+          value={Email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-2 border rounded"
           required
@@ -41,7 +41,7 @@ const LoginPage = () => {
         <input
           type="password"
           placeholder="Password"
-          value={password}
+          value={Password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 mb-4 border rounded"
           required
