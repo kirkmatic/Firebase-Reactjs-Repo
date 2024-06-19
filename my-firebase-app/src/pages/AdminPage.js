@@ -2,26 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { auth, db } from '../authentications/Firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
+
 const AdminPage = () => {
+    const [id, setId] = useState('');
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [role, setRole] = useState('user')
     const [fetchData, setFetchData] = useState([]);
-    const [id, setId] = useState('');
 
     // Creating a Database Ref
-    const dbref = collection(db, "my-firebase-app");
+    const dbref = collection(db, "users");
 
     // Add data to database
     const add = async () => {
         try {
-            const addData = await addDoc(dbref, { Name: name, Address: address, Email: email });
+            const addData = await addDoc(dbref, { Name: name, Address: address, Email: email, Password: password, Role: role });
             if (addData) {
                 alert("Data Added Successfully");
                 // Clear input fields after adding data
                 setName('');
                 setAddress('');
+                setPassword('')
                 setEmail('');
+                setRole('user')
                 // Fetch data again to include the newly added item
                 fetch();
             }
@@ -57,13 +62,14 @@ const AdminPage = () => {
     // Update the data
     const update = async () => {
         try {
-            const updateref = doc(db, "my-firebase-app", id);
-            await updateDoc(updateref, { Name: name, Address: address, Email: email });
+            const updateref = doc(db, "users", id);
+            await updateDoc(updateref, {Name: name, Address: address, Email: email, Password: password, Role: role});
             alert("Updated Successfully");
             // Clear input fields after updating data
             setName('');
             setAddress('');
             setEmail('');
+            setRole('user')
             // Fetch data again to include the updated item
             fetch();
         } catch (error) {
@@ -74,7 +80,7 @@ const AdminPage = () => {
     // Delete the data
     const del = async (id) => {
         try {
-            const delref = doc(db, "my-firebase-app", id);
+            const delref = doc(db, "users", id);
             await deleteDoc(delref);
             alert("Deleted Successfully");
             // Fetch data again to remove the deleted item from the display
@@ -114,6 +120,14 @@ const AdminPage = () => {
                             value={email}  
                             onChange={(e) => setEmail(e.target.value)} 
                         />
+                        <input 
+                            className='w-full p-2 mb-2 border rounded' 
+                            type='password' 
+                            placeholder='Password' 
+                            autoComplete='off'  
+                            value={password} 
+                            onChange={(e) => setPassword(e.target.value)} 
+                        />
                     </div>
                     <div className='flex space-x-2'>
                         <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={add}>Add</button>
@@ -121,7 +135,7 @@ const AdminPage = () => {
                     </div>
                 </div>
             </div>
-            <div className='p-4 bg-gray-100'>
+            {/* <div className='p-4 bg-gray-100'>
                 <h2 className='text-2xl font-bold mb-4'>CRUD Database</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                     {fetchData.map(data => (
@@ -136,6 +150,31 @@ const AdminPage = () => {
                         </div>
                     ))}
                 </div>
+            </div> */}
+            <div>
+                <h2 className='text-2xl font-bold mb-4'>Admin Page</h2>
+                <button>Add User</button>
+                <table>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                    </tr>
+                        {fetchData.map(data => (
+                                <tr key={data.id}>
+                                    <td>{data.id}</td>
+                                    <td>{data.Name}</td>
+                                    <td>{data.Address}</td>
+                                    <td>{data.Email}</td>
+                                    <td>{data.Password}</td>                                   
+                                    <td><button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button></td>
+                                    <td> <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button></td>
+                                </tr>
+
+
+                        ))}
+                </table>
             </div>
         </>
     );

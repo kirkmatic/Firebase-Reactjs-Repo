@@ -6,19 +6,28 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const SignupPage = () => {
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('user'); // default role
+  const [Name, setName] = useState('')
+  const [Email, setEmail] = useState('');
+  const [Address, setAddress] = useState('')
+  const [Password, setPassword] = useState('');
+  const [Role, setRole] = useState('user'); // default role
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+      const userCredential = await auth.createUserWithEmailAndPassword(Email, Password);
       const user = userCredential.user;
+
+
       await db.collection('users').doc(user.uid).set({
-        email,
-        role,
+
+        Name,
+        Address,
+        Email,
+        Password,
+        Role,
+
       });
       navigate('/login-page');
     } catch (error) {
@@ -32,9 +41,25 @@ const SignupPage = () => {
       <form onSubmit={handleSignup} className="bg-white p-6 rounded shadow-md">
         <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
         <input
+          type="text"
+          placeholder="Name"
+          value={Name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full p-2 mb-2 border rounded"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Address"
+          value={Address}
+          onChange={(e) => setAddress(e.target.value)}
+          className="w-full p-2 mb-2 border rounded"
+          required
+        />
+        <input
           type="email"
           placeholder="Email"
-          value={email}
+          value={Email}
           onChange={(e) => setEmail(e.target.value)}
           className="w-full p-2 mb-2 border rounded"
           required
@@ -42,12 +67,12 @@ const SignupPage = () => {
         <input
           type="password"
           placeholder="Password"
-          value={password}
+          value={Password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full p-2 mb-4 border rounded"
           required
         />
-        <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full p-2 mb-4 border rounded">
+        <select value={Role} onChange={(e) => setRole(e.target.value)} className="w-full p-2 mb-4 border rounded">
           <option value="user">User</option>
           <option value="admin">Admin</option>
         </select>
