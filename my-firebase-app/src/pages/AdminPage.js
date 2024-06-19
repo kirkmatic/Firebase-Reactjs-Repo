@@ -121,7 +121,7 @@ const AdminPage = () => {
                     </div>
                 </div>
             </div>
-            <div className='p-4 bg-gray-100'>
+            {/* <div className='p-4 bg-gray-100'>
                 <h2 className='text-2xl font-bold mb-4'>CRUD Database</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
                     {fetchData.map(data => (
@@ -136,6 +136,29 @@ const AdminPage = () => {
                         </div>
                     ))}
                 </div>
+            </div> */}
+            <div>
+                <h2 className='text-2xl font-bold mb-4'>Admin Page</h2>
+                <button>Add User</button>
+                <table>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                    </tr>
+                        {fetchData.map(data => (
+                                <tr key={data.id}>
+                                    <td>{data.Name}</td>
+                                    <td>{data.Address}</td>
+                                    <td>{data.Email}</td>
+                                    <td><button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button></td>
+                                    <td> <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button></td>
+                                </tr>
+
+
+                        ))}
+                </table>
             </div>
         </>
     );
