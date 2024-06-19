@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { auth, db } from '../authentications/Firebase';
 import { useNavigate, Link } from 'react-router-dom';
