@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { auth, db } from '../authentications/Firebase';
+import {  db } from '../authentications/Firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 
 
@@ -54,6 +54,7 @@ const AdminPage = () => {
     const passData = async (id) => {
         const matchId = fetchData.find((data) => data.id === id);
         setName(matchId.Name);
+        setPassword(matchId.Password)
         setAddress(matchId.Address);
         setEmail(matchId.Email);
         setId(matchId.id);
@@ -70,6 +71,7 @@ const AdminPage = () => {
             setAddress('');
             setEmail('');
             setRole('user')
+            setPassword('')
             // Fetch data again to include the updated item
             fetch();
         } catch (error) {
