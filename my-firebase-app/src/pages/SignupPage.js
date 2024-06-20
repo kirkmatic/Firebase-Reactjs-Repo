@@ -78,7 +78,7 @@ const SignupPage = () => {
         </select>
         <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded">Sign Up</button>
         <p className="mt-4">
-          Already have an account? <Link to="/login" className="text-blue-500">Login</Link>
+          Already have an account? <Link to="/login-page" className="text-blue-500">Login</Link>
         </p>
       </form>
     </div>
