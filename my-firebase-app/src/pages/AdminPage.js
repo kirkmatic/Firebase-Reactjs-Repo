@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {  db } from '../authentications/Firebase';
+import { db } from '../authentications/Firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
-
+import AddUserPopUp from '../components/AddUserPopUp';
 
 const AdminPage = () => {
     const [id, setId] = useState('');
@@ -9,33 +9,30 @@ const AdminPage = () => {
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('user')
+    const [role, setRole] = useState('user');
     const [fetchData, setFetchData] = useState([]);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    // Creating a Database Ref
     const dbref = collection(db, "users");
 
-    // Add data to database
     const add = async () => {
         try {
             const addData = await addDoc(dbref, { Name: name, Address: address, Email: email, Password: password, Role: role });
             if (addData) {
                 alert("Data Added Successfully");
-                // Clear input fields after adding data
                 setName('');
                 setAddress('');
-                setPassword('')
+                setPassword('');
                 setEmail('');
-                setRole('user')
-                // Fetch data again to include the newly added item
+                setRole('user');
                 fetch();
+                setIsPopupOpen(false);
             }
         } catch (error) {
             alert("Error: " + error.message);
         }
     };
 
-    // Fetch data from database
     const fetch = async () => {
         try {
             const snapshot = await getDocs(dbref);
@@ -50,42 +47,38 @@ const AdminPage = () => {
         fetch();
     }, []);
 
-    // Pass data to form for updating
     const passData = async (id) => {
         const matchId = fetchData.find((data) => data.id === id);
         setName(matchId.Name);
-        setPassword(matchId.Password)
+        setPassword(matchId.Password);
         setAddress(matchId.Address);
         setEmail(matchId.Email);
         setId(matchId.id);
+        setIsPopupOpen(true);
     };
 
-    // Update the data
     const update = async () => {
         try {
             const updateref = doc(db, "users", id);
-            await updateDoc(updateref, {Name: name, Address: address, Email: email, Password: password, Role: role});
+            await updateDoc(updateref, { Name: name, Address: address, Email: email, Password: password, Role: role });
             alert("Updated Successfully");
-            // Clear input fields after updating data
             setName('');
             setAddress('');
             setEmail('');
-            setRole('user')
-            setPassword('')
-            // Fetch data again to include the updated item
+            setRole('user');
+            setPassword('');
             fetch();
+            setIsPopupOpen(false);
         } catch (error) {
             alert("Error: " + error.message);
         }
     };
 
-    // Delete the data
     const del = async (id) => {
         try {
             const delref = doc(db, "users", id);
             await deleteDoc(delref);
             alert("Deleted Successfully");
-            // Fetch data again to remove the deleted item from the display
             fetch();
         } catch (error) {
             alert("Error: " + error.message);
@@ -93,93 +86,56 @@ const AdminPage = () => {
     };
 
     return (
-        <>
-            <div className='flex flex-col items-center p-4 bg-gray-100'>
-                <h2 className='text-2xl font-bold mb-4'>Add / Update Form</h2>
-                <div className='flex flex-col items-center w-full max-w-md p-4 bg-white shadow-md rounded'>
-                    <div className='w-full mb-4'>
-                        <input 
-                            className='w-full p-2 mb-2 border rounded' 
-                            type='text' 
-                            placeholder='Fullname' 
-                            autoComplete='off'  
-                            value={name} 
-                            onChange={(e) => setName(e.target.value)} 
-                        />
-                        <input 
-                            className='w-full p-2 mb-2 border rounded' 
-                            type='text' 
-                            placeholder='Address' 
-                            autoComplete='off' 
-                            value={address} 
-                            onChange={(e) => setAddress(e.target.value)} 
-                        />
-                        <input 
-                            className='w-full p-2 mb-4 border rounded' 
-                            type='email' 
-                            placeholder='Email' 
-                            autoComplete='off' 
-                            value={email}  
-                            onChange={(e) => setEmail(e.target.value)} 
-                        />
-                        <input 
-                            className='w-full p-2 mb-2 border rounded' 
-                            type='password' 
-                            placeholder='Password' 
-                            autoComplete='off'  
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                        />
-                    </div>
-                    <div className='flex space-x-2'>
-                        <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={add}>Add</button>
-                        <button className='px-4 py-2 bg-green-500 text-white rounded' onClick={update}>Update</button>
-                    </div>
-                </div>
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <h2 className='text-3xl font-bold mb-6 text-center'>Admin Page</h2>
+            <div className='flex justify-end mb-4'>
+                <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={() => setIsPopupOpen(true)}>Add User</button>
             </div>
-            {/* <div className='p-4 bg-gray-100'>
-                <h2 className='text-2xl font-bold mb-4'>CRUD Database</h2>
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
-                    {fetchData.map(data => (
-                        <div key={data.id} className='p-4 bg-white shadow-md rounded'>
-                            <h3 className='text-xl font-bold'>Name: {data.Name}</h3>
-                            <p>Address: {data.Address}</p>
-                            <p>Email: {data.Email}</p>
-                            <div className='flex space-x-2 mt-2'>
-                                <button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button>
-                                <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div> */}
-            <div>
-                <h2 className='text-2xl font-bold mb-4'>Admin Page</h2>
-                <button>Add User</button>
-                <table>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Email</th>
-                    </tr>
+            <div className='overflow-x-auto'>
+                <table className='min-w-full bg-white shadow-md rounded'>
+                    <thead>
+                        <tr className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
+                            <th className='py-3 px-6 text-left'>Id</th>
+                            <th className='py-3 px-6 text-left'>Name</th>
+                            <th className='py-3 px-6 text-left'>Address</th>
+                            <th className='py-3 px-6 text-left'>Email</th>
+                            <th className='py-3 px-6 text-left'>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody className='text-gray-600 text-sm font-light'>
                         {fetchData.map(data => (
-                                <tr key={data.id}>
-                                    <td>{data.id}</td>
-                                    <td>{data.Name}</td>
-                                    <td>{data.Address}</td>
-                                    <td>{data.Email}</td>
-                                    <td>{data.Password}</td>                                   
-                                    <td><button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button></td>
-                                    <td> <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button></td>
-                                </tr>
-
-
+                            <tr key={data.id} className='border-b border-gray-200 hover:bg-gray-100'>
+                                <td className='py-3 px-6 text-left whitespace-nowrap'>{data.id}</td>
+                                <td className='py-3 px-6 text-left'>{data.Name}</td>
+                                <td className='py-3 px-6 text-left'>{data.Address}</td>
+                                <td className='py-3 px-6 text-left'>{data.Email}</td>
+                                <td className='py-3 px-6 text-left flex space-x-2'>
+                                    <button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button>
+                                    <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button>
+                                </td>
+                            </tr>
                         ))}
+                    </tbody>
                 </table>
             </div>
-        </>
+            <AddUserPopUp
+                trigger={isPopupOpen}
+                setTrigger={setIsPopupOpen}
+                name={name}
+                setName={setName}
+                address={address}
+                setAddress={setAddress}
+                email={email}
+                setEmail={setEmail}
+                password={password}
+                setPassword={setPassword}
+                role={role}
+                setRole={setRole}
+                add={add}
+                update={update}
+            />
+        </div>
     );
-}
+};
 
 export default AdminPage;
