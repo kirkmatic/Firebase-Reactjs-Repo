@@ -5,7 +5,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AdminPage from './pages/AdminPage';
+
 import CustomersPage from './pages/CustomersPage';
+
 
 import ProtectedRoute from './authentications/ProtectedRoute';
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../authentications/Firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc } from 'firebase/firestore';
 import AddUserPopUp from '../components/AddUserPopUp';
+import NavBarLogout from '../components/NavBarLogout';
 
 const AdminPage = () => {
     const [id, setId] = useState('');
@@ -86,55 +87,59 @@ const AdminPage = () => {
     };
 
     return (
-        <div className="p-6 bg-gray-100 min-h-screen">
-            <h2 className='text-3xl font-bold mb-6 text-center'>Admin Page</h2>
-            <div className='flex justify-end mb-4'>
-                <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={() => setIsPopupOpen(true)}>Add User</button>
-            </div>
-            <div className='overflow-x-auto'>
-                <table className='min-w-full bg-white shadow-md rounded'>
-                    <thead>
-                        <tr className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
-                            <th className='py-3 px-6 text-left'>Id</th>
-                            <th className='py-3 px-6 text-left'>Name</th>
-                            <th className='py-3 px-6 text-left'>Address</th>
-                            <th className='py-3 px-6 text-left'>Email</th>
-                            <th className='py-3 px-6 text-left'>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className='text-gray-600 text-sm font-light'>
-                        {fetchData.map(data => (
-                            <tr key={data.id} className='border-b border-gray-200 hover:bg-gray-100'>
-                                <td className='py-3 px-6 text-left whitespace-nowrap'>{data.id}</td>
-                                <td className='py-3 px-6 text-left'>{data.Name}</td>
-                                <td className='py-3 px-6 text-left'>{data.Address}</td>
-                                <td className='py-3 px-6 text-left'>{data.Email}</td>
-                                <td className='py-3 px-6 text-left flex space-x-2'>
-                                    <button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button>
-                                    <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button>
-                                </td>
+        // <NavBarLogout />
+        <>
+            <NavBarLogout />
+            <div className="p-6 bg-gray-100 min-h-screen">
+                <h2 className='text-3xl font-bold mb-6 text-center'>Admin Page</h2>
+                <div className='flex justify-end mb-4'>
+                    <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={() => setIsPopupOpen(true)}>Add User</button>
+                </div>
+                <div className='overflow-x-auto'>
+                    <table className='min-w-full bg-white shadow-md rounded'>
+                        <thead>
+                            <tr className='bg-gray-200 text-gray-600 uppercase text-sm leading-normal'>
+                                <th className='py-3 px-6 text-left'>Id</th>
+                                <th className='py-3 px-6 text-left'>Name</th>
+                                <th className='py-3 px-6 text-left'>Address</th>
+                                <th className='py-3 px-6 text-left'>Email</th>
+                                <th className='py-3 px-6 text-left'>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className='text-gray-600 text-sm font-light'>
+                            {fetchData.map(data => (
+                                <tr key={data.id} className='border-b border-gray-200 hover:bg-gray-100'>
+                                    <td className='py-3 px-6 text-left whitespace-nowrap'>{data.id}</td>
+                                    <td className='py-3 px-6 text-left'>{data.Name}</td>
+                                    <td className='py-3 px-6 text-left'>{data.Address}</td>
+                                    <td className='py-3 px-6 text-left'>{data.Email}</td>
+                                    <td className='py-3 px-6 text-left flex space-x-2'>
+                                        <button className='px-4 py-2 bg-yellow-500 text-white rounded' onClick={() => passData(data.id)}>Update</button>
+                                        <button className='px-4 py-2 bg-red-500 text-white rounded' onClick={() => del(data.id)}>Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                <AddUserPopUp
+                    trigger={isPopupOpen}
+                    setTrigger={setIsPopupOpen}
+                    name={name}
+                    setName={setName}
+                    address={address}
+                    setAddress={setAddress}
+                    email={email}
+                    setEmail={setEmail}
+                    password={password}
+                    setPassword={setPassword}
+                    role={role}
+                    setRole={setRole}
+                    add={add}
+                    update={update}
+                />
             </div>
-            <AddUserPopUp
-                trigger={isPopupOpen}
-                setTrigger={setIsPopupOpen}
-                name={name}
-                setName={setName}
-                address={address}
-                setAddress={setAddress}
-                email={email}
-                setEmail={setEmail}
-                password={password}
-                setPassword={setPassword}
-                role={role}
-                setRole={setRole}
-                add={add}
-                update={update}
-            />
-        </div>
+        </>
     );
 };
 
