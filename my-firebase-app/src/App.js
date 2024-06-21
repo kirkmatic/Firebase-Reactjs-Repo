@@ -6,6 +6,8 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import AdminPage from './pages/AdminPage';
 
+import CustomersPage from './pages/CustomersPage';
+
 
 import ProtectedRoute from './authentications/ProtectedRoute';
 
@@ -16,12 +18,12 @@ function App() {
         <Route path="/home-page" element={<HomePage />} />
         <Route path='/login-page' element={<LoginPage/>} />
         <Route path="/signup-page" element={<SignupPage />} />
-        {/* <Route path='/customers-page'
+        <Route path='/customers-page'
          element={
             <ProtectedRoute>
               <CustomersPage/>
             </ProtectedRoute>}
-        /> */}
+        />
         <Route 
           path="/admin-page" 
           element={
