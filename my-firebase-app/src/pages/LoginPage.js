@@ -29,6 +29,7 @@ const LoginPage = () => {
     <>
 
     <div className='w-full h-screen flex justify-center items-center bg-red-100'>
+
       <div className='flex relative w-[1065px] h-[722px] bg-white rounded-[20px]'>
 
         <div className='flex flex-col justify-center items-start p-10 gap-6'>
@@ -68,14 +69,14 @@ const LoginPage = () => {
             </button>
           </form> 
             <p className="text-black text-xl font-light  font-['Montserrat']">Don’t have an account?
-              <Link to="/signup-page" className="absolute left-72 text-rose-500 text-xl font-bold font-['Montserrat']">
+              <Link to="/signup-page" className="absolute pl-2 text-rose-500 text-xl font-bold font-['Montserrat']">
                 Sign Up
             </Link>
             </p>
         </div>
  
         <div>
-          <div className='w-[532px] h-full bg-rose-500 rounded-tr-[20px] rounded-br-[20px]' />
+          <div className='ml-4 w-[532px] h-full bg-rose-500 rounded-tr-[20px] rounded-br-[20px]' />
         </div>
 
       </div>

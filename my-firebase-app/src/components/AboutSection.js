@@ -7,7 +7,7 @@ const AboutSection = () => {
         <div className="bg-about-section w-[600px] min-h-[600px] bg-cover bg-center"></div>
       </div>
       <div className="max-w-xl text-left">
-        <h1 className="text-red-400 text-6xl font-extrabold mb-8">About Us</h1>
+        <h1 className="text-red-400 text-6xl font-extrabold mb-8 font-['Montserrat']">About Us</h1>
         <p className="text-black text-xl font-medium mb-8 text-justify">
           We are a team of passionate artists dedicated to bringing your memories to life through stunning, lifelike portraits. With years of experience and a deep love for our craft, we strive to capture the true essence and beauty of our subjects in every piece we create.
           Our mission is to create art that not only reflects the outer appearance but also tells a story and evokes emotion. We believe that a portrait should be a cherished keepsake, a lasting memory that holds a special place in your heart.
