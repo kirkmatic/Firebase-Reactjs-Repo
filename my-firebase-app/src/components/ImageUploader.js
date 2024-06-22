@@ -5,9 +5,9 @@ import firebase from 'firebase/compat/app';
 
 const ImageUploader = () => {
   const [imageUpload, setImageUpload] = useState(null);
-  const [progress, setProgress] = useState(0);
   const [imageURLs, setImageURLs] = useState([]);
   const [user, setUser] = useState(null);
+  const [orderType, setOrderType] = useState('traditional');
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -35,7 +35,8 @@ const ImageUploader = () => {
     setImageURLs(images);
   };
 
-  const uploadFile = async () => {
+  const uploadFile = async (event) => {
+    event.preventDefault();
     if (!imageUpload || !user) return;
 
     const sessionId = uuidv4();
@@ -46,16 +47,16 @@ const ImageUploader = () => {
       const url = await snapshot.ref.getDownloadURL();
 
       const docRef = await db.collection('images').add({
-        uid: user.uid, // Associate image with user UID
+        uid: user.uid,
         sessionId: sessionId,
         imageUrl: url,
+        orderType: orderType,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
 
       alert('File uploaded successfully:', url);
-      setProgress(0);
       setImageUpload(null);
-      setImageURLs(prevURLs => [{ id: docRef.id, imageUrl: url }, ...prevURLs]); // Add new URL to the list
+      setImageURLs(prevURLs => [{ id: docRef.id, imageUrl: url }, ...prevURLs]);
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -63,14 +64,9 @@ const ImageUploader = () => {
 
   const deleteImage = async (image) => {
     try {
-      // Delete from storage
       const imageRef = storage.refFromURL(image.imageUrl);
       await imageRef.delete();
-
-      // Delete from Firestore
       await db.collection('images').doc(image.id).delete();
-
-      // Update state
       setImageURLs(prevURLs => prevURLs.filter(img => img.id !== image.id));
     } catch (error) {
       console.error('Error deleting file:', error);
@@ -78,44 +74,39 @@ const ImageUploader = () => {
   };
 
   return (
-    <div>
-      <input
-        type='file'
-        onChange={(event) => {
-          setImageUpload(event.target.files[0]);
-        }}
-      />
-      <button onClick={uploadFile}>
-        Upload file
-      </button>
-      {progress > 0 && <progress value={progress} max="100" />}
-      <div>
-        <h3>Uploaded Images:</h3>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+    <div className="p-4">
+      <form onSubmit={uploadFile} className="space-y-4">
+        <input
+          type="file"
+          onChange={(event) => setImageUpload(event.target.files[0])}
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+        />
+        <select
+          value={orderType}
+          onChange={(e) => setOrderType(e.target.value)}
+          className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
+        >
+          <option value="traditional">Traditional</option>
+          <option value="digital">Digital</option>
+        </select>
+        <button type="submit" className="block w-full py-2 bg-blue-500 text-white rounded-lg">
+          Place Order
+        </button>
+      </form>
+
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold">Uploaded Images:</h3>
+        <div className="flex flex-wrap gap-4 mt-4">
           {imageURLs.map((image) => (
-            <div key={image.id} style={{ position: 'relative' }}>
+            <div key={image.id} className="relative w-40 h-40">
               <img
                 src={image.imageUrl}
                 alt="Uploaded"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                className="w-full h-full object-cover rounded-lg"
               />
               <button
                 onClick={() => deleteImage(image)}
-                style={{
-                  position: 'absolute',
-                  top: '5px',
-                  right: '5px',
-                  background: 'red',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '50%',
-                  cursor: 'pointer',
-                  width: '25px',
-                  height: '25px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
               >
                 X
               </button>
