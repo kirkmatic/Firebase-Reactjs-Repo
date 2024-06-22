@@ -95,6 +95,8 @@ const AdminPage = () => {
                 <div className='flex justify-end mb-4'>
                     <button className='px-4 py-2 bg-blue-500 text-white rounded' onClick={() => setIsPopupOpen(true)}>Add User</button>
                 </div>
+
+                
                 <div className='overflow-x-auto'>
                     <table className='min-w-full bg-white shadow-md rounded'>
                         <thead>
@@ -122,6 +124,7 @@ const AdminPage = () => {
                         </tbody>
                     </table>
                 </div>
+                
                 <AddUserPopUp
                     trigger={isPopupOpen}
                     setTrigger={setIsPopupOpen}
