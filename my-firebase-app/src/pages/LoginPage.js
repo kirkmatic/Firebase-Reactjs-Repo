@@ -44,7 +44,7 @@ const LoginPage = () => {
                 placeholder="Email"
                 value={Email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-[440px] h-[68px] bg-zinc-50 rounded border-2 border-rose-500 pl-6 text-m font-medium font-['Montserrat'] placeholder-rose-500"
+                className="w-[440px] h-[68px] bg-zinc-50 rounded border-2 border-rose-400 pl-6 text-m font-medium font-['Montserrat'] placeholder-rose-400 text-rose-400"
                 required
               />
             </div>
@@ -54,14 +54,15 @@ const LoginPage = () => {
                 placeholder="Password"
                 value={Password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-[440px] h-[68px] bg-zinc-50 rounded border-2 border-rose-500 pl-6 pr-16 text-m font-medium font-['Montserrat'] placeholder-rose-500"
+                className="w-[440px] h-[68px] bg-zinc-50 rounded border-2 border-rose-400 pl-6 pr-16 text-m font-medium font-['Montserrat'] placeholder-rose-400 text-rose-400"
                 required
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-5 px-10 py-2 text-sm text-gray-600"
+                className="absolute inset-y-0 right-0 px-10 py-2 text-sm text-rose-400"
                 onClick={() => setShowPassword(!showPassword)}
               >
+                {showPassword? <b>Hide</b> : <b>Show</b>} 
               </button>
             </div>
             <button type="submit" className="w-[440px] h-[71px] bg-rose-500 rounded text-white text-xl font-extrabold font-['Montserrat']">
