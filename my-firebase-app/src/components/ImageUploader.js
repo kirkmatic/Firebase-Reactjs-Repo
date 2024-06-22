@@ -1,38 +1,79 @@
-import React, { useState } from 'react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { v4 as uuidv4 } from 'uuid'; // Import UUID library for unique session IDs
-import { storage, db } from '../authentications/Firebase';
+import React, { useState, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { storage, db, auth } from '../authentications/Firebase';
 import firebase from 'firebase/compat/app';
 
 const ImageUploader = () => {
-    const [imageUpload, setImageUpload] = useState(null);
+  const [imageUpload, setImageUpload] = useState(null);
   const [progress, setProgress] = useState(0);
-  const [imageURL, setImageURL] = useState('');
+  const [imageURLs, setImageURLs] = useState([]);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUser(user);
+        fetchImages(user.uid);
+      } else {
+        setUser(null);
+        setImageURLs([]);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const fetchImages = async (uid) => {
+    const imagesCollection = await db.collection('images')
+      .where('uid', '==', uid)
+      .orderBy('timestamp', 'desc')
+      .get();
+    const images = imagesCollection.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    setImageURLs(images);
+  };
 
   const uploadFile = async () => {
-    if (!imageUpload) return;
+    if (!imageUpload || !user) return;
 
-    const sessionId = uuidv4(); // Generate a unique session ID
+    const sessionId = uuidv4();
     const imageRef = storage.ref(`images/${sessionId}/${imageUpload.name}`);
 
     try {
       const snapshot = await imageRef.put(imageUpload);
       const url = await snapshot.ref.getDownloadURL();
 
-      // Save the URL and session ID to Firestore
-      await db.collection('images').add({
+      const docRef = await db.collection('images').add({
+        uid: user.uid, // Associate image with user UID
         sessionId: sessionId,
         imageUrl: url,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      alert("Image Uploaded")
-      console.log('File uploaded successfully:', url);
+      alert('File uploaded successfully:', url);
       setProgress(0);
       setImageUpload(null);
-      setImageURL(url); // Set the image URL state
+      setImageURLs(prevURLs => [{ id: docRef.id, imageUrl: url }, ...prevURLs]); // Add new URL to the list
     } catch (error) {
       console.error('Error uploading file:', error);
+    }
+  };
+
+  const deleteImage = async (image) => {
+    try {
+      // Delete from storage
+      const imageRef = storage.refFromURL(image.imageUrl);
+      await imageRef.delete();
+
+      // Delete from Firestore
+      await db.collection('images').doc(image.id).delete();
+
+      // Update state
+      setImageURLs(prevURLs => prevURLs.filter(img => img.id !== image.id));
+    } catch (error) {
+      console.error('Error deleting file:', error);
     }
   };
 
@@ -44,16 +85,44 @@ const ImageUploader = () => {
           setImageUpload(event.target.files[0]);
         }}
       />
-      <button className='w-[440px] h-[71px] bg-rose-500 rounded text-white text-xl font-extrabold ' onClick={uploadFile}>
+      <button onClick={uploadFile}>
         Upload file
       </button>
       {progress > 0 && <progress value={progress} max="100" />}
-      {imageURL && (
-        <div>
-          <h3>Uploaded Image:</h3>
-          <img src={imageURL} alt="Uploaded" style={{ width: '300px', marginTop: '20px' }} />
+      <div>
+        <h3>Uploaded Images:</h3>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+          {imageURLs.map((image) => (
+            <div key={image.id} style={{ position: 'relative' }}>
+              <img
+                src={image.imageUrl}
+                alt="Uploaded"
+                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+              />
+              <button
+                onClick={() => deleteImage(image)}
+                style={{
+                  position: 'absolute',
+                  top: '5px',
+                  right: '5px',
+                  background: 'red',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  width: '25px',
+                  height: '25px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                X
+              </button>
+            </div>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
