@@ -69,7 +69,7 @@ const LoginPage = () => {
               Login
             </button>
           </form> 
-            <p className="text-black text-xl font-light  font-['Montserrat']">Don’t have an account?
+            <p className="text-black text-xl align-middle font-light font-['Montserrat']">Don’t have an account?
               <Link to="/signup-page" className="absolute pl-2 text-rose-500 text-xl font-bold font-['Montserrat']">
                 Sign Up
             </Link>
