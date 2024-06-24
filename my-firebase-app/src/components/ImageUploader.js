@@ -103,30 +103,33 @@ const ImageUploader = () => {
           </form>
         </div>
 
-        <div className="m-2 p-2 max-w-full cursor-pointer box-border align-middle bg-white shadow-lg rounded-lg">
-          <h3 className="text-lg font-semibold">Uploaded Images:</h3>
-          <div className="flex flex-wrap gap-4 mt-4">
-            {imageURLs.map((image) => (
-              <div key={image.id} className="relative w-60 h-40">
-                <img
-                  src={image.imageUrl}
-                  alt="Uploaded"
-                  className="w-full h-full object-cover rounded-lg"
-                />
-                <div className="absolute bottom-2 left-2 bg-white bg-opacity-75 p-1 rounded text-xs">
-                  <p>Type: {image.orderType}</p>
-                  <p>Time: {image.timestamp}</p>
-                </div>
-                <button
-                  onClick={() => deleteImage(image)}
-                  className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                >
-                  X
-                </button>
-              </div>
-            ))}
-          </div>
+        <div className="m-6 p-6 max-w-full cursor-pointer box-border align-middle bg-white shadow-lg rounded-lg">
+  <h3 className="text-xl font-semibold mb-6">Uploaded Images:</h3>
+  <div className="flex flex-wrap gap-6">
+    {imageURLs.map((image) => (
+      <div key={image.id} className="relative w-72 h-48">
+        <img
+          src={image.imageUrl}
+          alt="Uploaded"
+          className="w-full h-full object-cover rounded-lg"
+        />
+        <div className="absolute bottom-2 left-2 bg-white bg-opacity-75 p-2 rounded text-sm shadow-md">
+          <p>Type: {image.orderType}</p>
+          <p>Time: {image.timestamp}</p>
         </div>
+        <button
+          onClick={() => deleteImage(image)}
+          className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-red-600 transition duration-300"
+        >
+          X
+        </button>
+      </div>
+    ))}
+  </div>
+</div>
+
+
+
       </div>
     </div>
   );
